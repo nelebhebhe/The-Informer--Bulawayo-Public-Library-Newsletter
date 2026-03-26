@@ -1,0 +1,1421 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Informer — Bulawayo Public Library</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=IBM+Plex+Mono:wght@300;400;500&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=Space+Grotesk:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink: #1a1208;
+    --paper: #f5ede0;
+    --cream: #ede0c8;
+    --rust: #b84a1e;
+    --gold: #c9922a;
+    --sage: #4a6741;
+    --slate: #3d4a5c;
+    --muted: #7a6a56;
+    --rule: #c4a882;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--paper);
+    color: var(--ink);
+    font-family: 'Libre Baskerville', Georgia, serif;
+    font-size: 15px;
+    line-height: 1.7;
+  }
+
+  /* ─── MASTHEAD ─── */
+  .masthead {
+    background: var(--ink);
+    padding: 0;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .masthead::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: repeating-linear-gradient(
+      0deg,
+      transparent,
+      transparent 2px,
+      rgba(255,255,255,0.015) 2px,
+      rgba(255,255,255,0.015) 4px
+    );
+    pointer-events: none;
+  }
+
+  .masthead-top {
+    border-bottom: 1px solid rgba(201,146,42,0.4);
+    padding: 8px 40px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .masthead-top span {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.12em;
+    color: rgba(245,237,224,0.5);
+    text-transform: uppercase;
+  }
+
+  .masthead-top .issue-badge {
+    background: var(--rust);
+    color: var(--paper);
+    padding: 2px 10px;
+    font-size: 9px;
+    letter-spacing: 0.15em;
+  }
+
+  .masthead-center {
+    padding: 32px 40px 20px;
+    text-align: center;
+    position: relative;
+  }
+
+  .library-line {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 0.35em;
+    color: var(--gold);
+    text-transform: uppercase;
+    margin-bottom: 12px;
+    display: block;
+  }
+
+  .masthead-title {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(52px, 9vw, 96px);
+    font-weight: 900;
+    color: var(--paper);
+    line-height: 0.9;
+    letter-spacing: -0.02em;
+    text-transform: uppercase;
+  }
+
+  .masthead-title em {
+    font-style: italic;
+    color: var(--gold);
+  }
+
+  .masthead-subtitle {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.25em;
+    color: rgba(245,237,224,0.55);
+    text-transform: uppercase;
+    margin-top: 14px;
+  }
+
+  .masthead-rule {
+    height: 3px;
+    background: linear-gradient(90deg, transparent, var(--gold) 15%, var(--rust) 50%, var(--gold) 85%, transparent);
+    margin: 16px 40px 0;
+  }
+
+  .masthead-tagline {
+    background: var(--rust);
+    text-align: center;
+    padding: 8px 40px;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    color: var(--paper);
+    text-transform: uppercase;
+  }
+
+  /* ─── NAV BAR ─── */
+  .nav-bar {
+    background: var(--cream);
+    border-bottom: 2px solid var(--ink);
+    padding: 0 40px;
+    display: flex;
+    gap: 0;
+    overflow-x: auto;
+  }
+
+  .nav-bar a {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--ink);
+    text-decoration: none;
+    padding: 12px 18px;
+    border-right: 1px solid var(--rule);
+    white-space: nowrap;
+    transition: background 0.15s, color 0.15s;
+  }
+
+  .nav-bar a:hover, .nav-bar a.active {
+    background: var(--ink);
+    color: var(--paper);
+  }
+
+  /* ─── TICKER ─── */
+  .ticker-wrap {
+    background: var(--ink);
+    overflow: hidden;
+    padding: 7px 0;
+    border-bottom: 1px solid rgba(201,146,42,0.3);
+  }
+
+  .ticker-label {
+    display: inline-block;
+    background: var(--rust);
+    color: var(--paper);
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 0.2em;
+    padding: 2px 10px;
+    text-transform: uppercase;
+    margin-right: 14px;
+    vertical-align: middle;
+  }
+
+  .ticker-text {
+    display: inline-block;
+    white-space: nowrap;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 10px;
+    color: rgba(245,237,224,0.7);
+    letter-spacing: 0.05em;
+    animation: ticker 40s linear infinite;
+  }
+
+  @keyframes ticker {
+    0% { transform: translateX(100vw); }
+    100% { transform: translateX(-100%); }
+  }
+
+  /* ─── LAYOUT ─── */
+  .page {
+    max-width: 1140px;
+    margin: 0 auto;
+    padding: 0 20px;
+  }
+
+  /* ─── HEADLINE STORY ─── */
+  .front-page {
+    display: grid;
+    grid-template-columns: 1fr 340px;
+    gap: 0;
+    border-bottom: 2px solid var(--ink);
+    padding: 32px 0 0;
+  }
+
+  .headline-story {
+    padding-right: 32px;
+    border-right: 1px solid var(--rule);
+  }
+
+  .kicker {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--rust);
+    display: block;
+    margin-bottom: 8px;
+  }
+
+  h1.story-head {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(28px, 4vw, 46px);
+    font-weight: 900;
+    line-height: 1.1;
+    color: var(--ink);
+    margin-bottom: 12px;
+    letter-spacing: -0.01em;
+  }
+
+  h1.story-head em { font-style: italic; color: var(--rust); }
+
+  .deck {
+    font-family: 'Playfair Display', serif;
+    font-style: italic;
+    font-size: 16px;
+    color: var(--muted);
+    line-height: 1.5;
+    margin-bottom: 16px;
+    border-left: 3px solid var(--gold);
+    padding-left: 14px;
+  }
+
+  .byline {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 0.15em;
+    color: var(--muted);
+    text-transform: uppercase;
+    margin-bottom: 16px;
+    display: flex;
+    gap: 14px;
+  }
+
+  .byline span { color: var(--rust); }
+
+  .story-body {
+    column-count: 2;
+    column-gap: 24px;
+    font-size: 14px;
+    line-height: 1.75;
+    color: #2a1f10;
+  }
+
+  .story-body p { margin-bottom: 1em; }
+  .story-body p:first-child::first-letter {
+    font-family: 'Playfair Display', serif;
+    font-size: 4.5em;
+    font-weight: 900;
+    float: left;
+    line-height: 0.8;
+    margin: 0.05em 0.08em 0 0;
+    color: var(--rust);
+  }
+
+  /* ─── SIDEBAR ─── */
+  .front-sidebar {
+    padding-left: 24px;
+    padding-bottom: 24px;
+  }
+
+  .sidebar-block {
+    margin-bottom: 24px;
+    padding-bottom: 20px;
+    border-bottom: 1px solid var(--rule);
+  }
+
+  .sidebar-block:last-child { border-bottom: none; }
+
+  .sidebar-head {
+    font-family: 'Playfair Display', serif;
+    font-size: 17px;
+    font-weight: 700;
+    line-height: 1.3;
+    margin-bottom: 6px;
+    color: var(--ink);
+  }
+
+  .sidebar-head a { color: inherit; text-decoration: none; }
+  .sidebar-head a:hover { color: var(--rust); }
+
+  .sidebar-blurb {
+    font-size: 13px;
+    color: var(--muted);
+    line-height: 1.55;
+  }
+
+  /* ─── STATS BAR ─── */
+  .stats-bar {
+    background: var(--ink);
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    border-bottom: 3px solid var(--rust);
+  }
+
+  .stat-item {
+    padding: 20px 24px;
+    border-right: 1px solid rgba(255,255,255,0.08);
+    text-align: center;
+  }
+
+  .stat-item:last-child { border-right: none; }
+
+  .stat-num {
+    font-family: 'Playfair Display', serif;
+    font-size: 38px;
+    font-weight: 900;
+    color: var(--gold);
+    line-height: 1;
+    display: block;
+  }
+
+  .stat-label {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 0.18em;
+    color: rgba(245,237,224,0.55);
+    text-transform: uppercase;
+    margin-top: 5px;
+    display: block;
+  }
+
+  /* ─── SECTION HEADERS ─── */
+  .section-header {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 24px 0 16px;
+    border-top: 3px solid var(--ink);
+    margin-top: 32px;
+  }
+
+  .section-header h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: 22px;
+    font-weight: 900;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    white-space: nowrap;
+  }
+
+  .section-header::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--rule);
+  }
+
+  .section-tag {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 8px;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    background: var(--rust);
+    color: var(--paper);
+    padding: 3px 8px;
+  }
+
+  /* ─── FEATURE GRID ─── */
+  .feature-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1px;
+    background: var(--rule);
+    border: 1px solid var(--rule);
+    margin-bottom: 32px;
+  }
+
+  .feature-card {
+    background: var(--paper);
+    padding: 22px;
+  }
+
+  .feature-card:first-child {
+    grid-column: span 2;
+    background: var(--cream);
+  }
+
+  .feature-card .kicker { margin-bottom: 6px; }
+
+  .feature-card h3 {
+    font-family: 'Playfair Display', serif;
+    font-size: 20px;
+    font-weight: 700;
+    line-height: 1.25;
+    margin-bottom: 8px;
+  }
+
+  .feature-card:first-child h3 {
+    font-size: 26px;
+  }
+
+  .feature-card p {
+    font-size: 13.5px;
+    color: var(--muted);
+    line-height: 1.6;
+  }
+
+  .feature-card .read-more {
+    display: inline-block;
+    margin-top: 12px;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--rust);
+    text-decoration: none;
+    border-bottom: 1px solid var(--rust);
+    padding-bottom: 1px;
+  }
+
+  /* ─── INTERVIEW ─── */
+  .interview-block {
+    background: var(--ink);
+    color: var(--paper);
+    padding: 36px 40px;
+    margin-bottom: 32px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .interview-block::before {
+    content: '"';
+    position: absolute;
+    top: -20px;
+    left: 20px;
+    font-family: 'Playfair Display', serif;
+    font-size: 240px;
+    font-weight: 900;
+    color: rgba(201,146,42,0.08);
+    line-height: 1;
+  }
+
+  .interview-label {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 6px;
+  }
+
+  .interview-block h3 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(18px, 3vw, 26px);
+    font-weight: 700;
+    font-style: italic;
+    line-height: 1.3;
+    margin-bottom: 24px;
+    color: var(--paper);
+  }
+
+  .qa-item { margin-bottom: 20px; }
+
+  .question {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.1em;
+    color: var(--gold);
+    text-transform: uppercase;
+    margin-bottom: 6px;
+  }
+
+  .answer {
+    font-size: 14px;
+    line-height: 1.7;
+    color: rgba(245,237,224,0.85);
+  }
+
+  .interviewee {
+    margin-top: 24px;
+    padding-top: 16px;
+    border-top: 1px solid rgba(255,255,255,0.12);
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.1em;
+    color: rgba(245,237,224,0.5);
+  }
+
+  .interviewee strong { color: var(--gold); font-weight: 500; }
+
+  /* ─── THREE-COL ANALYSIS ─── */
+  .three-col {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 28px;
+    margin-bottom: 32px;
+  }
+
+  .analysis-col h4 {
+    font-family: 'Playfair Display', serif;
+    font-size: 16px;
+    font-weight: 700;
+    border-bottom: 2px solid var(--rust);
+    padding-bottom: 6px;
+    margin-bottom: 10px;
+  }
+
+  .analysis-col p {
+    font-size: 13.5px;
+    line-height: 1.7;
+    color: #2a1f10;
+  }
+
+  /* ─── PULL QUOTE ─── */
+  .pull-quote {
+    border-top: 3px solid var(--rust);
+    border-bottom: 3px solid var(--rust);
+    padding: 20px 0;
+    margin: 28px 0;
+    text-align: center;
+  }
+
+  .pull-quote p {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(18px, 2.5vw, 24px);
+    font-style: italic;
+    font-weight: 700;
+    color: var(--rust);
+    line-height: 1.4;
+  }
+
+  .pull-quote cite {
+    display: block;
+    margin-top: 8px;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--muted);
+    font-style: normal;
+  }
+
+  /* ─── COLUMN / OPINION ─── */
+  .opinion-strip {
+    background: var(--cream);
+    border: 1px solid var(--rule);
+    border-left: 6px solid var(--gold);
+    padding: 24px 28px;
+    margin-bottom: 24px;
+  }
+
+  .opinion-strip .kicker { margin-bottom: 4px; }
+
+  .opinion-strip h3 {
+    font-family: 'Playfair Display', serif;
+    font-size: 20px;
+    font-weight: 700;
+    margin-bottom: 8px;
+  }
+
+  .opinion-strip p {
+    font-size: 14px;
+    line-height: 1.7;
+    color: #2a1f10;
+  }
+
+  .opinion-author {
+    margin-top: 14px;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+
+  /* ─── DATA VIZ: SECTOR BREAKDOWN ─── */
+  .data-panel {
+    background: var(--ink);
+    padding: 28px;
+    margin-bottom: 32px;
+  }
+
+  .data-panel-title {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 16px;
+  }
+
+  .bar-chart { display: flex; flex-direction: column; gap: 10px; }
+
+  .bar-row { display: flex; align-items: center; gap: 12px; }
+
+  .bar-label {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 10px;
+    color: rgba(245,237,224,0.7);
+    width: 180px;
+    flex-shrink: 0;
+    letter-spacing: 0.05em;
+  }
+
+  .bar-track {
+    flex: 1;
+    height: 20px;
+    background: rgba(255,255,255,0.06);
+    position: relative;
+  }
+
+  .bar-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--rust), var(--gold));
+    position: relative;
+  }
+
+  .bar-pct {
+    position: absolute;
+    right: 8px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 10px;
+    color: var(--ink);
+    font-weight: 500;
+  }
+
+  /* ─── BRIEFINGS ─── */
+  .briefings-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1px;
+    background: var(--rule);
+    border: 1px solid var(--rule);
+    margin-bottom: 32px;
+  }
+
+  .briefing-item {
+    background: var(--paper);
+    padding: 18px 20px;
+  }
+
+  .briefing-item .kicker { margin-bottom: 4px; }
+
+  .briefing-item h4 {
+    font-family: 'Playfair Display', serif;
+    font-size: 15px;
+    font-weight: 700;
+    margin-bottom: 6px;
+    line-height: 1.3;
+  }
+
+  .briefing-item p {
+    font-size: 13px;
+    line-height: 1.6;
+    color: var(--muted);
+  }
+
+  /* ─── FOOTER ─── */
+  footer {
+    background: var(--ink);
+    color: rgba(245,237,224,0.6);
+    padding: 40px;
+    margin-top: 40px;
+  }
+
+  .footer-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 32px;
+    margin-bottom: 28px;
+  }
+
+  footer h4 {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 10px;
+  }
+
+  footer p, footer li {
+    font-size: 12px;
+    line-height: 1.7;
+    font-family: 'IBM Plex Mono', monospace;
+  }
+
+  footer ul { list-style: none; }
+  footer ul li::before { content: '→ '; color: var(--rust); }
+
+  .footer-bottom {
+    border-top: 1px solid rgba(255,255,255,0.1);
+    padding-top: 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .footer-bottom p {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 0.1em;
+    color: rgba(245,237,224,0.35);
+  }
+
+  .footer-logo {
+    font-family: 'Playfair Display', serif;
+    font-size: 22px;
+    font-weight: 900;
+    color: var(--paper);
+    letter-spacing: -0.01em;
+  }
+
+  .footer-logo em { color: var(--gold); font-style: italic; }
+
+  /* ─── RESPONSIVE ─── */
+  @media (max-width: 860px) {
+    .front-page { grid-template-columns: 1fr; }
+    .headline-story { padding-right: 0; border-right: none; border-bottom: 1px solid var(--rule); padding-bottom: 24px; }
+    .front-sidebar { padding-left: 0; }
+    .story-body { column-count: 1; }
+    .stats-bar { grid-template-columns: repeat(2, 1fr); }
+    .feature-grid { grid-template-columns: 1fr; }
+    .feature-card:first-child { grid-column: span 1; }
+    .three-col { grid-template-columns: 1fr; }
+    .briefings-grid { grid-template-columns: 1fr; }
+    .footer-grid { grid-template-columns: 1fr; }
+    .masthead-top, .masthead-center, .masthead-tagline, .masthead-rule,
+    .nav-bar { padding-left: 20px; padding-right: 20px; }
+    .interview-block { padding: 24px 20px; }
+    .bar-label { width: 120px; font-size: 9px; }
+  }
+
+  /* ─── ANIMATIONS ─── */
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .masthead-title { animation: fadeIn 0.8s ease both; }
+  .stats-bar { animation: fadeIn 0.8s 0.2s ease both; }
+
+  /* ─── HORIZONTAL RULES ─── */
+  .ornament {
+    text-align: center;
+    color: var(--rule);
+    font-size: 18px;
+    margin: 10px 0;
+    letter-spacing: 10px;
+  }
+
+  .col-rule {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin: 24px 0 16px;
+  }
+
+  .col-rule::before, .col-rule::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--rule);
+  }
+
+  .col-rule span {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+
+  /* ─── LETTERS / MARKETPLACE ─── */
+  .letters-col {
+    background: var(--cream);
+    border: 1px solid var(--rule);
+    padding: 20px 22px;
+    margin-bottom: 28px;
+  }
+
+  .letters-col .kicker { margin-bottom: 12px; }
+
+  .letter-item {
+    border-bottom: 1px dashed var(--rule);
+    padding-bottom: 14px;
+    margin-bottom: 14px;
+  }
+
+  .letter-item:last-child { border-bottom: none; margin-bottom: 0; }
+
+  .letter-item p { font-size: 13px; line-height: 1.65; color: #2a1f10; }
+
+  .letter-sig {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-top: 6px;
+  }
+
+  /* ─── CALENDAR ─── */
+  .calendar-block {
+    border: 1px solid var(--rule);
+    padding: 16px 20px;
+    margin-bottom: 24px;
+  }
+
+  .cal-event {
+    display: flex;
+    gap: 14px;
+    margin-bottom: 12px;
+    padding-bottom: 12px;
+    border-bottom: 1px dashed var(--rule);
+    align-items: flex-start;
+  }
+
+  .cal-event:last-child { border-bottom: none; margin-bottom: 0; }
+
+  .cal-date {
+    text-align: center;
+    min-width: 42px;
+  }
+
+  .cal-day {
+    font-family: 'Playfair Display', serif;
+    font-size: 26px;
+    font-weight: 900;
+    color: var(--rust);
+    line-height: 1;
+    display: block;
+  }
+
+  .cal-month {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 8px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+
+  .cal-info h5 {
+    font-family: 'Playfair Display', serif;
+    font-size: 14px;
+    font-weight: 700;
+    margin-bottom: 3px;
+  }
+
+  .cal-info p {
+    font-size: 12px;
+    color: var(--muted);
+    font-family: 'IBM Plex Mono', monospace;
+  }
+
+  /* ─── TWO-COL WITH SIDEBAR ─── */
+  .two-col-layout {
+    display: grid;
+    grid-template-columns: 1fr 260px;
+    gap: 28px;
+  }
+
+  @media (max-width: 860px) {
+    .two-col-layout { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ═══ MASTHEAD ═══ -->
+<header class="masthead">
+  <div class="masthead-top">
+    <span>Bulawayo Public Library · Knowledge for All</span>
+    <span class="issue-badge">Vol. I · Issue 1 · 2026</span>
+    <span>Bulawayo, Zimbabwe</span>
+  </div>
+  <div class="masthead-center">
+    <span class="library-line">Bulawayo Public Library presents</span>
+    <div class="masthead-title">The <em>Informer</em></div>
+    <div class="masthead-subtitle">The Informal Sector Monitor · Zimbabwe's Street-Level Economy</div>
+  </div>
+  <div class="masthead-rule"></div>
+  <div class="masthead-tagline">Voices from the market · Analysis from the ground · Insight for all</div>
+</header>
+
+<!-- ─── NAV ─── -->
+<nav class="nav-bar">
+  <a href="#" class="active">Front Page</a>
+  <a href="#analysis">Analysis</a>
+  <a href="#interview">Interview</a>
+  <a href="#columns">Columns</a>
+  <a href="#data">Data</a>
+  <a href="#briefings">Briefings</a>
+  <a href="#letters">Letters</a>
+  <a href="#events">Events</a>
+</nav>
+
+<!-- ─── TICKER ─── -->
+<div class="ticker-wrap">
+  <span class="ticker-label">Live</span>
+  <span class="ticker-text">
+    ZimStat census: 76% of Zimbabwe's economy is informal &nbsp;·&nbsp; 
+    204,798 businesses surveyed in national economic census &nbsp;·&nbsp; 
+    Bulawayo leads with 40% of all formal enterprises nationally &nbsp;·&nbsp; 
+    Only 1 in 5 informal operators earns above the poverty line &nbsp;·&nbsp; 
+    Wholesale &amp; retail accounts for 73% of informal sector activity &nbsp;·&nbsp; 
+    Women make up 52% of Zimbabwe's informal workforce &nbsp;·&nbsp; 
+    Informal economy estimated at $44 billion in PPP terms &nbsp;·&nbsp; 
+    CZI warns informal sector poses "critical risk" to formal businesses &nbsp;·&nbsp;
+  </span>
+</div>
+
+<!-- ═══ STATS BAR ═══ -->
+<div class="stats-bar">
+  <div class="stat-item">
+    <span class="stat-num">76%</span>
+    <span class="stat-label">Of Zimbabwe's economy is informal (ZimStat, 2025)</span>
+  </div>
+  <div class="stat-item">
+    <span class="stat-num">4 in 5</span>
+    <span class="stat-label">Workers employed in the informal sector</span>
+  </div>
+  <div class="stat-item">
+    <span class="stat-num">$44B</span>
+    <span class="stat-label">Estimated informal economy size (PPP)</span>
+  </div>
+  <div class="stat-item">
+    <span class="stat-num">20%</span>
+    <span class="stat-label">Informal operators above the poverty line</span>
+  </div>
+</div>
+
+<!-- ═══ MAIN CONTENT ═══ -->
+<div class="page">
+
+  <!-- ─── FRONT PAGE ─── -->
+  <div class="front-page">
+
+    <!-- HEADLINE STORY -->
+    <article class="headline-story">
+      <span class="kicker">Cover Story · National Economy</span>
+      <h1 class="story-head">Zimbabwe's <em>Invisible Economy</em> Steps Into the Light</h1>
+      <div class="deck">A landmark national census reveals that three in every four businesses in Zimbabwe operate outside the formal system — and Bulawayo sits at the heart of the story.</div>
+      <div class="byline">
+        <span>By the Informer Editorial Desk</span>
+        <span>·</span>
+        <span>March 2026</span>
+      </div>
+
+      <div class="story-body">
+        <p>For decades, it was the economy that official statistics struggled to count. The vendors lining Leopold Takawira Avenue, the welders in Makokoba, the seamstresses in Mzilikazi, the cross-border traders hauling goods through Beitbridge — all operating beyond the ledgers of ZIMRA, outside the gaze of regulators, yet sustaining millions of Zimbabwean households. Now, for the first time in the country's history, a comprehensive national economic census has put hard numbers to what many already knew: Zimbabwe is, in the most fundamental sense, an informal economy.</p>
+
+        <p>The Zimbabwe National Statistics Agency's landmark census — which surveyed over 204,798 businesses — concluded that 76% of all economic activity takes place outside formal structures. That figure is not merely a statistical footnote. It is a portrait of a nation, a testament to resilience, and an urgent call for policymakers to rethink how Zimbabwe approaches its own workforce.</p>
+
+        <p>Bulawayo, Zimbabwe's second city and industrial heartland, offers a striking contrast. The census shows that Bulawayo has the largest concentration of formal enterprises among all provinces — at 40%, far outpacing regions where the formal sector accounts for less than 30% of local market activity. Yet even here, in the corridors of what was once the region's manufacturing capital, the informal sector thrives, adapts, and grows.</p>
+
+        <p>"The informal economy is not a failure of ambition," said one market administrator in Bulawayo's Egodini terminus area, where thousands of traders, minibus operators, and food vendors converge daily. "It is what happens when the formal economy stops making space for ordinary people. We didn't choose this. We built this — because we had to."</p>
+
+        <p>The census paints a picture that is both vast and granular. Wholesale and retail trade dominates, accounting for 73% of all informal sector activity. Manufacturing accounts for a further 8%. Services — hairdressing, repairs, catering, transport — make up much of the rest. These are not marginal activities. They represent the daily economic engine of Zimbabwe's cities and towns.</p>
+
+        <p>Yet the Confederation of Zimbabwe Industries (CZI) struck a starkly different tone when the census results were released. Describing the situation as a "critical risk," CZI research officer MacDonald Mutengo argued that formal businesses are being squeezed — heavily regulated, taxed, and unable to compete with unregistered rivals who operate without the burden of compliance costs. "Companies are not making profits," he noted. "They are highly regulated." The warning is real, but critics argue that targeting the informal sector is misguided when the root causes — poor investment climate, currency instability, and regulatory complexity — remain unaddressed.</p>
+
+        <p>For researchers, the census data demands a more nuanced reading. A 2024 study by the International Centre for Tax and Development, which surveyed 2,490 informal operators across Harare and Masvingo, found that only one in five informal business operators earns enough to exceed the poverty line. The majority are not tax evaders thriving in the shadows — they are workers surviving at the margins, often paying more in levies, permits, and unofficial fees than the formal tax system would demand of them.</p>
+
+        <p>The story of Zimbabwe's informal economy is inseparable from the story of its recent decades: the hyperinflation of the 2000s that wiped out savings overnight; the collapse of formal employment that sent millions into self-employment by necessity; the successive currency crises that eroded trust in every financial institution. Informality is not a choice. It is, as researchers put it, "informal is normal" — the rational response of a workforce that has been let down by the formal structures that were supposed to serve it.</p>
+      </div>
+
+      <div class="pull-quote">
+        <p>"For every five informal business operators, only one earns enough to rise above the poverty line. These are people trying to make ends meet — not freeloaders."</p>
+        <cite>— International Centre for Tax and Development, 2024 Study</cite>
+      </div>
+    </article>
+
+    <!-- SIDEBAR -->
+    <aside class="front-sidebar">
+      <div class="section-header" style="margin-top:0; padding-top:0; border-top:none;">
+        <h2 style="font-size:14px;">Also Inside</h2>
+      </div>
+
+      <div class="sidebar-block">
+        <span class="kicker">Interview</span>
+        <div class="sidebar-head"><a href="#interview">The Market Mover: A Bulawayo trader on 20 years in the informal economy</a></div>
+        <p class="sidebar-blurb">Grace Dube started with a single sewing machine. Today she employs seven women and supplies uniforms to three private schools — all without a single formal business licence.</p>
+      </div>
+
+      <div class="sidebar-block">
+        <span class="kicker">Analysis</span>
+        <div class="sidebar-head"><a href="#analysis">Why taxation without understanding destroys what it seeks to capture</a></div>
+        <p class="sidebar-blurb">New research suggests generic tax instruments are harming the very traders ZIMRA hopes to bring into the fiscal net.</p>
+      </div>
+
+      <div class="sidebar-block">
+        <span class="kicker">Column</span>
+        <div class="sidebar-head"><a href="#columns">Ecocash changed everything — and nobody planned for it</a></div>
+        <p class="sidebar-blurb">Mobile money has quietly formalised millions of transactions. Our columnist argues the state is still five years behind.</p>
+      </div>
+
+      <div class="sidebar-block">
+        <span class="kicker">Data</span>
+        <div class="sidebar-head"><a href="#data">Informal sector by sector: A visual breakdown</a></div>
+        <p class="sidebar-blurb">From cross-border traders to backyard mechanics — where Zimbabwe's informal economy lives and breathes.</p>
+      </div>
+
+      <div class="sidebar-block">
+        <span class="kicker">Briefing</span>
+        <div class="sidebar-head"><a href="#briefings">Women at the centre: 52% of informal workers are female</a></div>
+        <p class="sidebar-blurb">Despite dominating the sector by numbers, women face the steepest barriers to finance, land, and legal recognition.</p>
+      </div>
+    </aside>
+  </div><!-- /front-page -->
+
+  <!-- ═══ ANALYSIS ═══ -->
+  <div id="analysis">
+    <div class="section-header">
+      <span class="section-tag">Analysis</span>
+      <h2>In Depth</h2>
+    </div>
+
+    <div class="three-col">
+      <div class="analysis-col">
+        <h4>The Taxation Trap</h4>
+        <p>Zimbabwe's government faces a fiscal paradox. The informal economy is enormous — contributing an estimated two-thirds of GDP — yet its contribution to national revenue remains minimal. The instinctive response has been to increase enforcement: raids on markets, licensing crackdowns, presumptive taxes applied broadly. But new research from the ICTD suggests this approach is self-defeating. Most informal traders are already heavily burdened by unofficial levies, council fees, and transport charges. Adding formal tax obligations without simplification simply drives businesses deeper underground — or out of business altogether. The solution, researchers argue, is not punishment but partnership: simplified flat-rate tax regimes, phased licensing, and a genuine reduction in the cost of doing business formally.</p>
+      </div>
+
+      <div class="analysis-col">
+        <h4>The Gender Dimension</h4>
+        <p>Women account for 52% of Zimbabwe's informal workforce — but they occupy the sector's most precarious positions. World Bank analysis of the 2017 PICES survey found that informal communal farmers, a group with a high proportion of women, experience extreme poverty at rates of 42%, compared with 15% for other informal workers. Women in the informal economy face compounding disadvantages: limited access to microfinance, no collateral for credit, insecure trading spaces, and near-total exclusion from social protection schemes. Only 12% of informal workers live in households where any member benefits from a government safety net. For the Bulawayo Public Library, understanding these dynamics is central to any meaningful community development agenda. Women's economic empowerment and informal sector reform are not separate conversations — they are one.</p>
+      </div>
+
+      <div class="analysis-col">
+        <h4>Bulawayo's Double Role</h4>
+        <p>Bulawayo's prominence in the formal economy — 40% of all formal enterprises — might suggest insulation from informalisation pressures. The reality is more complex. The city's manufacturing heritage has shrunk dramatically since the 1990s, as factory closures pushed thousands of skilled workers into the informal economy. Today, Bulawayo's informal sector is characterised by higher-skilled activity than other provinces: light engineering, garment production, food processing, and artisanal trades that bear the marks of a once-industrialised workforce. This creates both challenges and opportunities. The skills base is there. The market connections exist. What is missing is the enabling environment — access to factory space, affordable credit, and regulatory clarity — that could help Bulawayo's informal producers make the transition into viable, registered enterprises.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══ INTERVIEW ═══ -->
+  <div id="interview">
+    <div class="section-header">
+      <span class="section-tag">Profile &amp; Interview</span>
+      <h2>The Market Mover</h2>
+    </div>
+
+    <div class="interview-block">
+      <div class="interview-label">In Conversation</div>
+      <h3>"I don't call myself informal. I call myself a businesswoman. The government calls me informal because it hasn't figured out how to deal with me yet."</h3>
+
+      <div class="qa-item">
+        <div class="question">The Informer: You've been operating in Bulawayo for over twenty years. How has the environment changed?</div>
+        <div class="answer">It has changed in every way except the one that matters most. When I started, I had one sewing machine and I was sewing from a room in my mother's house in Mzilikazi. The city council came once, threatened to arrest me for running a business without a licence, and then never came back. That was my relationship with authority — invisibility with occasional harassment. Now I have seven employees and a proper workshop space. But the relationship with authority is still the same. We pay council levies for our market space. We pay for the electricity connection. We pay informal taxes to people who come with clipboards and collect money whose destination I have never understood. What we do not get is any recognition, any banking relationship, any path to growing into something the government would call formal. The goalposts are always moving.</div>
+      </div>
+
+      <div class="qa-item">
+        <div class="question">The Informer: Your business supplies school uniforms to three private schools. How do you manage without being formally registered?</div>
+        <div class="answer">Relationships. In Zimbabwe, relationships are your business licence. The school administrators know me. They have been buying from me for years. They know the quality of my work, they know I deliver on time, they know that if there is a problem I will fix it without argument. When they need a receipt, I write them one. When they need a quote on letterhead, my daughter designed one on the computer. We are practical people. We solve problems with what we have. The formal system was not designed for people like me, so I designed around it. But I will tell you honestly — it costs me. I cannot get a bank loan on my order history. I cannot bid for government contracts. I cannot get health insurance for my workers. These are real losses.</div>
+      </div>
+
+      <div class="qa-item">
+        <div class="question">The Informer: What would it take for you to formalise your business?</div>
+        <div class="answer">Make it cheap. Make it simple. Make it worth something. Right now, to register a business in Zimbabwe, you need multiple documents, multiple offices, multiple fees, and multiple weeks. And at the end of it, what do I get? I get the right to pay ZIMRA. That is the offer. Nobody is saying: here is a business development grant, here is a simplified bank account, here is access to a market where government contracts are open to you. Until formalisation comes with benefits, not just obligations, most of us will stay where we are. And I don't blame us for it.</div>
+      </div>
+
+      <div class="interviewee">
+        <strong>Grace Dube</strong> · Garment manufacturer &amp; informal sector trader, Bulawayo · Operating since 2004
+        <br>Name used with permission. Interview conducted in Ndebele and translated.
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══ DATA PANEL ═══ -->
+  <div id="data">
+    <div class="section-header">
+      <span class="section-tag">By the Numbers</span>
+      <h2>Informal Sector Breakdown</h2>
+    </div>
+
+    <div class="two-col-layout">
+      <div>
+        <div class="data-panel">
+          <div class="data-panel-title">Composition of Zimbabwe's Informal Economy by Activity (2025 Census)</div>
+          <div class="bar-chart">
+            <div class="bar-row">
+              <div class="bar-label">Wholesale &amp; Retail Trade</div>
+              <div class="bar-track"><div class="bar-fill" style="width:73%"><span class="bar-pct">73%</span></div></div>
+            </div>
+            <div class="bar-row">
+              <div class="bar-label">Light Manufacturing</div>
+              <div class="bar-track"><div class="bar-fill" style="width:8%"><span class="bar-pct">8%</span></div></div>
+            </div>
+            <div class="bar-row">
+              <div class="bar-label">Transport &amp; Logistics</div>
+              <div class="bar-track"><div class="bar-fill" style="width:7%"><span class="bar-pct">7%</span></div></div>
+            </div>
+            <div class="bar-row">
+              <div class="bar-label">Food &amp; Catering</div>
+              <div class="bar-track"><div class="bar-fill" style="width:5%"><span class="bar-pct">5%</span></div></div>
+            </div>
+            <div class="bar-row">
+              <div class="bar-label">Personal Services</div>
+              <div class="bar-track"><div class="bar-fill" style="width:4%"><span class="bar-pct">4%</span></div></div>
+            </div>
+            <div class="bar-row">
+              <div class="bar-label">Construction &amp; Repairs</div>
+              <div class="bar-track"><div class="bar-fill" style="width:3%"><span class="bar-pct">3%</span></div></div>
+            </div>
+          </div>
+          <div style="margin-top:14px; font-family:'IBM Plex Mono',monospace; font-size:9px; color:rgba(245,237,224,0.35); letter-spacing:0.1em;">
+            Source: Zimbabwe National Statistics Agency — National Economic Census, 2025
+          </div>
+        </div>
+
+        <div class="data-panel">
+          <div class="data-panel-title">Share of Informal Economy by Province (Formal Sector % of Local Market)</div>
+          <div class="bar-chart">
+            <div class="bar-row">
+              <div class="bar-label">Bulawayo</div>
+              <div class="bar-track"><div class="bar-fill" style="width:40%; background:linear-gradient(90deg,#4a6741,#7aad70)"><span class="bar-pct" style="color:#fff">40%</span></div></div>
+            </div>
+            <div class="bar-row">
+              <div class="bar-label">Harare</div>
+              <div class="bar-track"><div class="bar-fill" style="width:29%; background:linear-gradient(90deg,var(--rust),var(--gold))"><span class="bar-pct">29%</span></div></div>
+            </div>
+            <div class="bar-row">
+              <div class="bar-label">Manicaland</div>
+              <div class="bar-track"><div class="bar-fill" style="width:22%; background:linear-gradient(90deg,var(--rust),var(--gold))"><span class="bar-pct">22%</span></div></div>
+            </div>
+            <div class="bar-row">
+              <div class="bar-label">Mat. North</div>
+              <div class="bar-track"><div class="bar-fill" style="width:18%; background:linear-gradient(90deg,var(--rust),var(--gold))"><span class="bar-pct">18%</span></div></div>
+            </div>
+            <div class="bar-row">
+              <div class="bar-label">Midlands</div>
+              <div class="bar-track"><div class="bar-fill" style="width:16%; background:linear-gradient(90deg,var(--rust),var(--gold))"><span class="bar-pct">16%</span></div></div>
+            </div>
+          </div>
+          <div style="margin-top:14px; font-family:'IBM Plex Mono',monospace; font-size:9px; color:rgba(245,237,224,0.35); letter-spacing:0.1em;">
+            Note: Bulawayo is the only province where formal enterprises exceed 30% of the local market. All other provinces remain below this threshold.
+          </div>
+        </div>
+      </div>
+
+      <!-- CALENDAR -->
+      <div>
+        <div id="events">
+          <div class="section-header" style="margin-top:0; padding-top:0; border-top:none; border-bottom:2px solid var(--ink); padding-bottom:10px; margin-bottom:16px;">
+            <h2 style="font-size:14px;">Library Events</h2>
+          </div>
+          <div class="calendar-block">
+            <div class="cal-event">
+              <div class="cal-date">
+                <span class="cal-day">8</span>
+                <span class="cal-month">Apr</span>
+              </div>
+              <div class="cal-info">
+                <h5>Informal Economy Forum</h5>
+                <p>Panel discussion with traders, researchers &amp; local govt. Bulawayo Public Library — Main Hall · 10am</p>
+              </div>
+            </div>
+            <div class="cal-event">
+              <div class="cal-date">
+                <span class="cal-day">15</span>
+                <span class="cal-month">Apr</span>
+              </div>
+              <div class="cal-info">
+                <h5>Business Literacy Workshop</h5>
+                <p>Free bookkeeping &amp; mobile banking skills for informal traders. Library Resource Centre · 2pm</p>
+              </div>
+            </div>
+            <div class="cal-event">
+              <div class="cal-date">
+                <span class="cal-day">22</span>
+                <span class="cal-month">Apr</span>
+              </div>
+              <div class="cal-info">
+                <h5>Women in Trade Dialogue</h5>
+                <p>Facilitated conversation on gender, credit access &amp; the informal economy. Library Courtyard · 9am</p>
+              </div>
+            </div>
+            <div class="cal-event">
+              <div class="cal-date">
+                <span class="cal-day">3</span>
+                <span class="cal-month">May</span>
+              </div>
+              <div class="cal-info">
+                <h5>Census Data Deep Dive</h5>
+                <p>Understanding the 2025 economic census. What it means for Bulawayo. Library, Room 4 · 11am</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- LETTERS -->
+        <div id="letters">
+          <div class="section-header" style="border-top:2px solid var(--ink); padding-top:16px; margin-top:24px;">
+            <span class="section-tag">Letters</span>
+            <h2 style="font-size:14px;">From Our Readers</h2>
+          </div>
+          <div class="letters-col">
+            <div class="letter-item">
+              <p>I have been selling vegetables at Renkini Market for eleven years. When they talk about "the informal sector" on the news, I never recognise myself in their description. We are not a sector. We are people with children to feed, and we have built something real. Thank you for starting this newsletter.</p>
+              <div class="letter-sig">— Nomathemba K., Renkini Market, Bulawayo</div>
+            </div>
+            <div class="letter-item">
+              <p>The real story no one talks about is electricity. When ZESA load-sheds for 12 hours, my freezers stop, my stock spoils, and my week's income vanishes. The informal economy doesn't just have human challenges — it has infrastructure challenges that policy ignores completely.</p>
+              <div class="letter-sig">— Thandeka M., Chicken vendor, Nkulumane</div>
+            </div>
+            <div class="letter-item">
+              <p>As a cross-border trader between Bulawayo and Johannesburg, I want to say: EcoCash saved my business. When South Africa sends money back, when I pay suppliers in Harare, when I need to check my balance at 2am — mobile money is the only financial institution that works for us.</p>
+              <div class="letter-sig">— Bernard C., Cross-border trader, Beitbridge corridor</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══ COLUMNS ═══ -->
+  <div id="columns">
+    <div class="section-header">
+      <span class="section-tag">Opinion &amp; Commentary</span>
+      <h2>Columns</h2>
+    </div>
+
+    <div class="opinion-strip">
+      <span class="kicker">Column · Technology &amp; Finance</span>
+      <h3>EcoCash Changed Everything — And Nobody Planned for It</h3>
+      <p>There is a quiet revolution that has been underway in Zimbabwe's informal economy for over a decade, and it has nothing to do with government policy. It is mobile money. When EcoCash launched in 2011, it was aimed at the unbanked — at exactly the traders, vendors, and small producers who make up Zimbabwe's informal majority. What happened next was not planned by any ministry or development agency. Informal traders adopted mobile money faster than any other segment of the economy. They used it to pay suppliers, receive payments from customers, save small amounts safely, and send remittances to family in rural areas. By the time the formal banking sector understood what had happened, the informal economy already had its own financial infrastructure — accessible, low-cost, and trusted in a way that banks had never managed to be. The irony is profound. The state spent years trying to bring informal traders into the financial system through licensing and taxation. A private mobile network company did it in three years, simply by making it easy. The lesson for policymakers is not subtle: meet people where they are, not where you wish they were.</p>
+      <div class="opinion-author">Columnist: Sipho Ndlovu · Economist and former Bulawayo City Council adviser</div>
+    </div>
+
+    <div class="opinion-strip">
+      <span class="kicker">Column · Policy &amp; Governance</span>
+      <h3>The Permit Trap: How Bureaucracy Criminalises Survival</h3>
+      <p>To operate a food stall in a Bulawayo designated vending area, a trader technically needs a council permit, a health clearance certificate, a Zimbabwe Revenue Authority registration number, and in some cases proof of a fixed address for correspondence. The cost of obtaining all of these, in time and money, can exceed a month's earnings for a small-scale vendor. The result is predictable: most traders operate without them, not out of defiance but out of mathematical necessity. They then become vulnerable to intermittent enforcement — raids that confiscate stock, fines that must be paid immediately to avoid detention, and the constant low-level anxiety of operating under threat. This is not a tax system. It is a system of organised informality, where the state extracts resources from informal traders through enforcement rather than through fair, predictable, and proportionate taxation. The 2025 census data should prompt an urgent national conversation about decriminalising economic survival. Simplifying permits to a single, affordable annual fee — with phased payment options — would cost the government almost nothing and would transform the lives of hundreds of thousands of Zimbabweans.</p>
+      <div class="opinion-author">Columnist: Ruramai Chikwanda · Public policy researcher, Bulawayo</div>
+    </div>
+
+    <div class="opinion-strip">
+      <span class="kicker">Column · Economic History</span>
+      <h3>We Were Always Here: The Informal Economy Before the Crisis</h3>
+      <p>There is a common misconception that Zimbabwe's informal economy is a product of the 2000s crisis — that hyperinflation, land reform, and economic mismanagement created the informal sector from nothing. This is historically wrong, and the error matters. Informal trading, cross-border commerce, and unregistered small enterprise have been part of Zimbabwean economic life since before independence. The colonial economy was itself built on a dual structure: a formal economy reserved for white settlers, and an informal survival economy in which the majority black population was compelled to operate. Post-independence policy largely inherited this structure without dismantling it. What the 2000s crisis did was dramatically expand the informal sector, as formal employment collapsed. But the informal economy's roots — its social networks, its mutual aid associations, its cultural logic of Ubuntu-based exchange — are far older and deeper than any particular political moment. Understanding this history matters because it tells us that the informal economy will not be reformed by treating it as a problem to be solved. It must be engaged as an economy in its own right, with its own institutions, its own strengths, and its own legitimate claims on public resources.</p>
+      <div class="opinion-author">Columnist: Prof. Lindiwe Mpofu · Economic history, National University of Science &amp; Technology, Bulawayo</div>
+    </div>
+  </div>
+
+  <!-- ═══ BRIEFINGS ═══ -->
+  <div id="briefings">
+    <div class="section-header">
+      <span class="section-tag">News &amp; Briefings</span>
+      <h2>Around the Sector</h2>
+    </div>
+
+    <div class="briefings-grid">
+      <div class="briefing-item">
+        <span class="kicker">Taxation</span>
+        <h4>ZIMRA Eyes Presumptive Tax Expansion — Traders Wary</h4>
+        <p>The Zimbabwe Revenue Authority is reportedly considering expanding its presumptive tax regime to cover additional categories of informal businesses. Traders in Bulawayo's Mhlahlandlela market expressed concern that flat-rate taxes imposed without income verification would disproportionately burden those already earning below the poverty line. Research suggests only 6% of informal operators currently pay presumptive tax, despite broader enforcement efforts.</p>
+      </div>
+
+      <div class="briefing-item">
+        <span class="kicker">Currency</span>
+        <h4>ZiG Currency Adoption Slow in Informal Markets</h4>
+        <p>Despite the government's push for the Zimbabwe Gold (ZiG) currency, informal traders across Bulawayo report continued preference for US dollar transactions. Cross-border traders cite predictability and international acceptability as key factors. The multi-currency system, extended until 2030, means informal traders must navigate multiple currencies simultaneously — adding complexity and cost to daily operations.</p>
+      </div>
+
+      <div class="briefing-item">
+        <span class="kicker">Infrastructure</span>
+        <h4>Egodini Terminus Redevelopment: Traders Demand Consultation</h4>
+        <p>Bulawayo's long-delayed Egodini Mall redevelopment continues to generate controversy. Informal traders who have operated in the area for decades say they have received no meaningful consultation on where they will trade once construction is completed. Traders' associations have called on the Bulawayo City Council to guarantee designated vending spaces in the new development and to provide advance notice before any relocations take place.</p>
+      </div>
+
+      <div class="briefing-item">
+        <span class="kicker">Gender</span>
+        <h4>Women's Credit Access Remains Critical Barrier</h4>
+        <p>A new report from the Women's University in Africa highlights that informal sector women in Zimbabwe face systematic exclusion from formal credit markets. Without title deeds, formal employment records, or business registration, women traders cannot access conventional bank loans. The report recommends community-based savings groups (mukando) be formally recognised as creditworthiness evidence by microfinance institutions.</p>
+      </div>
+
+      <div class="briefing-item">
+        <span class="kicker">Regional</span>
+        <h4>Cross-Border Trade: Beitbridge Congestion Costs Traders Millions</h4>
+        <p>Informal cross-border traders report that chronic congestion at Beitbridge border post is costing them significant income. Traders who bring goods from South Africa face waits of up to 48 hours, with perishable goods spoiling before they can clear customs. The Beitbridge Traders Association has called on ZIMRA to establish a dedicated lane for registered small-scale cross-border traders with simplified documentation requirements.</p>
+      </div>
+
+      <div class="briefing-item">
+        <span class="kicker">Technology</span>
+        <h4>Digital Payments Transform Bulawayo's Informal Sector</h4>
+        <p>Mobile money usage among Bulawayo's informal traders has reached levels that researchers describe as transformative. A local survey found that over 70% of traders in designated vending areas now accept EcoCash and other mobile payment platforms, up from under 30% five years ago. Digital transactions offer traders safety (less cash handling), traceability, and — crucially — a transaction history that could eventually support credit applications.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══ FEATURE GRID ═══ -->
+  <div>
+    <div class="section-header">
+      <span class="section-tag">Features</span>
+      <h2>Further Reading</h2>
+    </div>
+
+    <div class="feature-grid">
+      <div class="feature-card">
+        <span class="kicker">Long Read · Trade &amp; Livelihoods</span>
+        <h3>The Cross-Border Economy: How Zimbabweans Built a Trade Network That Governments Still Don't Understand</h3>
+        <p>From the corridors of Beitbridge to the markets of Johannesburg, Lusaka, and Gaborone, Zimbabwean cross-border traders have constructed one of southern Africa's most sophisticated informal supply chains. They move clothing, electronics, household goods, and food across borders, navigating customs regulations, currency fluctuations, and logistical challenges that would defeat most registered import-export businesses. They do it without lawyers, without freight forwarders, and often without formal import licences — and they do it profitably enough to sustain families and communities. This is their story.</p>
+        <a href="#" class="read-more">Read Feature →</a>
+      </div>
+
+      <div class="feature-card">
+        <span class="kicker">Investigation</span>
+        <h3>Who Collects the Market Fees — and Where Do They Go?</h3>
+        <p>An investigation into the complex web of formal and informal levies paid by traders in Bulawayo's markets — and the accountability gap at the centre of the system.</p>
+        <a href="#" class="read-more">Read Investigation →</a>
+      </div>
+
+      <div class="feature-card">
+        <span class="kicker">Profile</span>
+        <h3>The Backyard Mechanic of Makokoba</h3>
+        <p>Elton Moyo fixes cars in a space the size of a carport. He has no formal training certificate. He has 300 loyal customers.</p>
+        <a href="#" class="read-more">Read Profile →</a>
+      </div>
+
+      <div class="feature-card">
+        <span class="kicker">Research Digest</span>
+        <h3>What the Census Doesn't Tell You</h3>
+        <p>The 2025 national economic census is historic. But researchers warn that the methodology undercounts key categories of informal work — particularly agricultural informality and home-based enterprises run primarily by women.</p>
+        <a href="#" class="read-more">Read Digest →</a>
+      </div>
+
+      <div class="feature-card">
+        <span class="kicker">Economy Watch</span>
+        <h3>Informality as Innovation: When Necessity Breeds Invention</h3>
+        <p>Zimbabwe's informal economy has pioneered mobile payment adoption, flexible microfinance, and distributed supply chains that formal sectors are only beginning to replicate.</p>
+        <a href="#" class="read-more">Read Feature →</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- SUBSCRIBE / ABOUT BOX -->
+  <div style="background:var(--cream); border:1px solid var(--rule); border-left:5px solid var(--sage); padding:24px 28px; margin-bottom:32px; display:grid; grid-template-columns:1fr 1fr; gap:28px;">
+    <div>
+      <span class="kicker" style="color:var(--sage);">About This Publication</span>
+      <h3 style="font-family:'Playfair Display',serif; font-size:18px; margin-bottom:8px;">The Informer is a community publication of the Bulawayo Public Library</h3>
+      <p style="font-size:13px; line-height:1.65; color:var(--muted);">Published quarterly. <em>The Informer</em> documents, analyses, and amplifies the stories of Zimbabwe's informal economy — with a particular focus on Bulawayo and Matabeleland. We believe that economic journalism should serve those whose labour drives the economy, not just those who manage it. All content is freely available at the Bulawayo Public Library and online.</p>
+    </div>
+    <div>
+      <span class="kicker" style="color:var(--sage);">Contribute &amp; Connect</span>
+      <p style="font-size:13px; line-height:1.65; color:var(--muted); margin-bottom:12px;">We welcome contributions from traders, researchers, community leaders, and economists. If you have a story from the informal sector that deserves to be heard, we want to hear it.</p>
+      <p style="font-family:'IBM Plex Mono',monospace; font-size:10px; color:var(--ink); letter-spacing:0.1em;">
+        📍 Corner Leopold Takawira Ave &amp; Fort St, Bulawayo<br>
+        📞 +263 29 2888211<br>
+        ✉ informer@bulawayolibrary.org.zw<br>
+        🕐 Mon–Fri 8am–5pm · Sat 8am–1pm
+      </p>
+    </div>
+  </div>
+
+</div><!-- /page -->
+
+<!-- ═══ FOOTER ═══ -->
+<footer>
+  <div class="page">
+    <div class="footer-grid">
+      <div>
+        <div class="footer-logo">The <em>Informer</em></div>
+        <p style="margin-top:10px; color:rgba(245,237,224,0.5);">A publication of the Bulawayo Public Library. Dedicated to understanding Zimbabwe's informal economy — its people, its challenges, and its extraordinary resilience.</p>
+      </div>
+      <div>
+        <h4>Sections</h4>
+        <ul>
+          <li>Front Page</li>
+          <li>Analysis &amp; Research</li>
+          <li>Interview &amp; Profile</li>
+          <li>Opinion Columns</li>
+          <li>Data &amp; Statistics</li>
+          <li>News Briefings</li>
+          <li>Events &amp; Letters</li>
+        </ul>
+      </div>
+      <div>
+        <h4>Resources at the Library</h4>
+        <ul>
+          <li>ZimStat Economic Census Reports</li>
+          <li>World Bank Zimbabwe Data</li>
+          <li>ICTD Informal Sector Studies</li>
+          <li>CZI Annual Industry Reviews</li>
+          <li>NUST Economic Research Papers</li>
+          <li>Free Business Skills Workshops</li>
+          <li>Digital Literacy &amp; EcoCash Training</li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>© 2026 Bulawayo Public Library · The Informer · Vol. I, Issue 1 · Published under the Bulawayo Public Library Community Media Initiative</p>
+      <p>Knowledge for All · Ulwazi Lwabantu Bonke</p>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>
